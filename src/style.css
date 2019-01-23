@@ -1,4 +1,4 @@
-.chatroom {
+.users {
   height: 100%; /* Full-height: remove this if you want "auto" height */
   width: 180px; /* Set the width of the sidebar */
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
@@ -11,7 +11,7 @@
 }
 
 /* The navigation menu links */
-.chatroom p {
+.users p {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
@@ -20,7 +20,7 @@
 }
 
 /* When you mouse over the navigation links, change their color */
-.chatroom p:hover {
+.users p:hover {
   color: #f1f1f1;
 }
 
@@ -32,6 +32,6 @@
 
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  .chatroom {padding-top: 15px;}
-  .chatroom p {font-size: 18px;}
+  .users {padding-top: 15px;}
+  .users p {font-size: 18px;}
 }
