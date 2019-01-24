@@ -7,53 +7,60 @@ console.log('loaded');
 const userContainer = document.querySelector('#user-container')
 const chatHeader = document.querySelector('.chatwith')
 const submitMessageForm = document.querySelector('#submit-form')
+const messagesContainer = document.querySelector('.messages')
 // console.log(submitMessageForm);
 
+/******** HELPERS ********************************/
 function userHtml(users) {
   return `<ul>
-              <li data-action="user" data-user-id="${users.id}">${users.username}</li>
+
           </ul>
           `
 }
 
-function chatHtmlText(messages) {
-  return `<div>
-            <ul>
-              <li data-action="">${messages.content}</li>
-            </ul>
-          </div>`
-}
 
 function fetchGetApiChatrooms() {
-  return fetch('http://localhost:3000/api/v1/chatrooms/')
+  return fetch('http://localhost:3000/api/v1/chatrooms')
   .then (res => res.json())
+  .then(res => {
+    // res.find(function(chatroom){
+    //   chatroom.users.includes === re
+    // })
+  })
 }
 
 function fetchGetApiMessages() {
-  return fetch('http://localhost:3000/api/v1/messages/')
+  return fetch('http://localhost:3000/api/v1/messages')
   .then(res => res.json())
+  .then( res => {
+    res.forEach(function(message){
+      messagesContainer.innerHTML += `<li data-action="">${message.content}</li>`
+    })
+  })
+}
+
+function renderAllMessages(res){
+  res
 }
 
 function fetchGetApiUsers() {
-  return fetch('http://localhost:3000/api/v1/users/')
+  return fetch('http://localhost:3000/api/v1/users')
   .then(res => res.json())
 }
 
-function postMessageUpdate(messages) {
-  return fetch('http://localhost:3000/api/v1/messages/', {
+function postMessageUpdate(messages, userID) {
+  console.log("message", messages, userID );
+  return fetch('http://localhost:3000/api/v1/messages', {
     method: 'POST',
     headers: {
-      'Content-Type': 'applicaiton/json',
-      'Accept': 'application/json'
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
     },
     body: JSON.stringify({
-      content: messages
+      content: messages,
+      user_id: userID,
+      chatroom_id: 3
     })
-  })
-  .then(res => res.json())
-  .then(jsonData => {
-  console.log(jsonData);
-    return jsonData
   })
 }
 
@@ -62,7 +69,7 @@ function renderListOfUsers() {
   return fetchGetApiUsers().then(users => {
     users.forEach(user => {
       // console.log(chatroom.room_name)
-      userContainer.innerHTML += userHtml(user)
+      userContainer.innerHTML += `<li data-action="user" data-user-id="${user.id}">${user.username}</li>`
     }) //end of forEach
   })
 }
@@ -82,9 +89,10 @@ function onUserClick(e) {
 
 function onSubmitMessage(e) {
   e.preventDefault()
-  console.log(e.target);
-  
-
+  const messageValue = submitMessageForm.querySelector('#message').value
+  const userID = e.target.dataset.senderId
+  console.log(userID);
+  postMessageUpdate(messageValue, userID).then(console.log)
   // Will uncomment when Form is working e.target.reset()
 }
 
@@ -96,8 +104,9 @@ function onSubmitMessage(e) {
 
 
 
-
+/********** LISTENERS *****************************************************/
 submitMessageForm.addEventListener('submit', onSubmitMessage)
 userContainer.addEventListener('click', onUserClick)
 renderListOfUsers()
+fetchGetApiMessages()
 }) // end of DOM DOMContentLoaded event listener

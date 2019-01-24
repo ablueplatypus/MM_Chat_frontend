@@ -8,9 +8,11 @@
   </head>
   <body>
     <!-- <div id="create-chatroom"></div> -->
-    <div class="users" id="user-container">
-      <h1>Users</h1>
+    <div class="users">
+      <h1>Matt</h1>
+      <ul id="user-container">
 
+      </ul>
 
     </div>
     <div class="main" id="message-container">
@@ -21,12 +23,18 @@
       </div>
       <hr>
 
-      <div class="messages"> messages </div>
+      <div>
+        <div>
+            <ul class="messages">
+
+            </ul>
+          </div>
+      </div>
       <hr>
       <div class="send-message">
-        <form data-sender-id="1" id="submit-form">
-          <input type="text" name="message" placeholder="Send a Message">
-          <input data-receiver="" data-chatroom-id="" data-sender="1" type="submit" value="Send Message">
+        <form data-sender-id="13" id="submit-form">
+          <input id="message" type="text" name="message" placeholder="Send a Message">
+          <input data-receiver="" data-chatroom-id="" data-sender="13" type="submit" value="Send Message">
         </form>
       </div>
 
