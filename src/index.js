@@ -3,33 +3,33 @@
 document.addEventListener('DOMContentLoaded', (e) => {
 console.log('loaded');
 // let isFetching = false
+CHATROOMS = []
 
 const userContainer = document.querySelector('#user-container')
 const chatHeader = document.querySelector('.chatwith')
 const submitMessageForm = document.querySelector('#submit-form')
 const messagesContainer = document.querySelector('.messages')
+const mainmain = document.querySelector('.main')
 // console.log(submitMessageForm);
 
-/******** HELPERS ********************************/
-function userHtml(users) {
-  return `<ul>
-
-          </ul>
-          `
-}
-
-
+/******** grab all chattrooms ********************************/
 function fetchGetApiChatrooms() {
   return fetch('http://localhost:3000/api/v1/chatrooms')
   .then (res => res.json())
   .then(res => {
-    // res.find(function(chatroom){
-    //   chatroom.users.includes === re
-    // })
-  })
+    CHATROOMS = res;
+  });
 }
 
-function fetchGetApiMessages() {
+function userIdArray(chattersArray){
+  let chatroomUsers = CHATROOMS[0].users
+  let chatroomUsersIdArray = chatroomUsers.map(function(user){
+    return user.id
+  });
+  return chatroomUsersIdArray;
+}
+
+function renderAllMessages() {
   return fetch('http://localhost:3000/api/v1/messages')
   .then(res => res.json())
   .then( res => {
@@ -37,10 +37,6 @@ function fetchGetApiMessages() {
       messagesContainer.innerHTML += `<li data-action="">${message.content}</li>`
     })
   })
-}
-
-function renderAllMessages(res){
-  res
 }
 
 function fetchGetApiUsers() {
@@ -74,6 +70,7 @@ function renderListOfUsers() {
   })
 }
 
+//**************  clicking on a user
 function onUserClick(e) {
 // console.log('Data name clicked', e.target.dataset.action, 'target id',e.target.dataset.userId);
   const data = e.target.dataset
@@ -81,9 +78,21 @@ function onUserClick(e) {
   if (data.action === 'user') {
     const userId = data.userId
     // console.log(userId);
-    chatHeader.innerHTML = `<h1>From:Matt To:${e.target.innerText}</h1>`
+    chatHeader.innerHTML = `<h1>${e.target.innerText}</h1>`
     const submitButton = document.querySelector('[value="Send Message"]')
     submitButton.dataset.receiver = userId
+    mainmain.dataset.receiver = userId
+
+    fetch(`http://localhost:3000/api/v1/chatrooms`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+
+      })
+    })
   }
 } // end of onChatroomClick
 
@@ -92,7 +101,13 @@ function onSubmitMessage(e) {
   const messageValue = submitMessageForm.querySelector('#message').value
   const userID = e.target.dataset.senderId
   console.log(userID);
-  postMessageUpdate(messageValue, userID).then(console.log)
+  postMessageUpdate(messageValue, userID)
+  .then( res => res.json())
+  .then( message => {
+    const messagesContainer = document.querySelector('.messages')
+    messagesContainer.innerHTML += `<li data-action="">${message.content}</li>`
+    window.scrollTo(0,mainmain.scrollHeight);
+  })
   // Will uncomment when Form is working e.target.reset()
 }
 
@@ -108,5 +123,6 @@ function onSubmitMessage(e) {
 submitMessageForm.addEventListener('submit', onSubmitMessage)
 userContainer.addEventListener('click', onUserClick)
 renderListOfUsers()
-fetchGetApiMessages()
+renderAllMessages()
+fetchGetApiChatrooms()
 }) // end of DOM DOMContentLoaded event listener
