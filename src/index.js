@@ -1,3 +1,4 @@
+
 // Welcome MM Chat JS Code.
 // index JS
 document.addEventListener('DOMContentLoaded', (e) => {
@@ -28,6 +29,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
     })
   }
   testing()
+
+  
 
 
   // function mattTesting(allUsersArray) {
@@ -98,6 +101,7 @@ function onUserClick(e, signedUSer) {
   // console.log("uzeeeeeesrrrrre", signedUser);
 // console.log('Data name clicked', e.target.dataset.action, 'target id',e.target.dataset.userId);
   const data = e.target.dataset
+  receiverID = e.target.dataset.userId
 
   if (data.action === 'user') {
     const userId = data.userId

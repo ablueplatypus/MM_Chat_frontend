@@ -26,14 +26,35 @@ console.log(formInput);
   form.addEventListener('submit', function(e){
     e.preventDefault();
     console.log("input value",formInput.value);
-
+    const formInputVal = document.querySelector('.form-control').value
     let foundUser = AllUSERS.find(function(user){
       return user.username.toLowerCase() == formInput.value.toLowerCase()
     })
     console.log(AllUSERS);
     console.log(foundUser);
     if (typeof foundUser == 'undefined'){
-      console.log("couldn't find you");
+      /****** CREATING NEW CUSTOMER ***********/
+      fetch('http://localhost:3000/api/v1/users', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          username: formInputVal,
+          password_digest: 123456
+        })
+      })
+      .then(res => res.json())
+      .then(user => {
+        let userID = user.id
+        console.log(userID);
+        localStorage.setItem('theID', `${userID}`);
+        window.location.href = 'file:///Users/agamy/Development/mod3-project/Mod_3_project_frontend/index.html';
+      })
+
+      /****** END CREATING NEW CUSTOMER ***********/
+
     }else{
       let userID = foundUser.id
       localStorage.setItem('theID', `${foundUser.id}`);
