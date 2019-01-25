@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
   function testing() {
     fetchGetApiUsers().then(users => {
       ALLUSERS = users
-      console.log(ALLUSERS);
+      // console.log(ALLUSERS);
       let theID = localStorage.getItem('theID');
 
         if (theID > 0){
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
   }
   testing()
 
-  
+
 
 
   // function mattTesting(allUsersArray) {
@@ -77,16 +77,18 @@ submitMessageForm.dataset.senderId = theID;
     // console.log("CHATOOOOOM", CHATROOMS);
   });
 /* FINDING A CHATROOM IN THE GLOBAL */
-function userIdArray(chattersArray, someweird){
-  console.log("CHATr2", someweird);
-  let foundChatRoom = someweird.find(function(chatroom){
+ let foundAChatroom = function(currentChatingIds, arrayOfAllChatrooms){
+  console.log('current chating ids' , currentChatingIds, 'array of all chatrooms', arrayOfAllChatrooms,);
+  let findChat = arrayOfAllChatrooms.find(function(chatroom){
     // debugger
-    return (JSON.stringify(arrayOfUsers(chatroom)) == JSON.stringify(chattersArray) ||
-    JSON.stringify(arrayOfUsers(chatroom)) == JSON.stringify(chattersArray.reverse()));
+    return (JSON.stringify(arrayOfUsers(chatroom)) == JSON.stringify(currentChatingIds) ||
+    JSON.stringify(arrayOfUsers(chatroom)) == JSON.stringify(currentChatingIds.reverse()));
   })
-  console.log("CHATr2", foundChatRoom);
-  return foundChatRoom;
+  console.log(findChat);
+  return findChat;
 }
+// console.log(foundAChatroom);
+
 
 /* GETTING AN ARRAY OF EACH CHATROOM USERS IDS */
 function arrayOfUsers(chatroom){
@@ -98,8 +100,6 @@ function arrayOfUsers(chatroom){
 // let testchatrooooomUsers = arrayOfUsers(CHATROOMS[0])
 //**************  clicking on a user
 function onUserClick(e, signedUSer) {
-  // console.log("uzeeeeeesrrrrre", signedUser);
-// console.log('Data name clicked', e.target.dataset.action, 'target id',e.target.dataset.userId);
   const data = e.target.dataset
   receiverID = e.target.dataset.userId
 
@@ -108,9 +108,7 @@ function onUserClick(e, signedUSer) {
     let recipient = e.target.dataset.userId
     let theID = localStorage.getItem('theID');
     let chattersArray = [parseInt(theID), parseInt(recipient)]
-    console.log(chattersArray);
     let stringOfUsers = chattersArray.toString()
-    // console.log(userId);
     chatHeader.innerHTML = `<h1>${e.target.innerText}</h1>`
     const submitButton = document.querySelector('[value="Send Message"]')
     // let theID = localStorage.getItem('theID');
@@ -118,9 +116,9 @@ function onUserClick(e, signedUSer) {
     submitButton.dataset.sender = theID
     mainmain.dataset.receiver = userId
 
-    let foundedChatRoom = userIdArray(chattersArray, CHATROOMS)
-
-    console.log("foundChatRoom", foundedChatRoom);
+    // console.log(CHATROOM);
+    // console.log("foundChatRoom", foundedChatRoom);
+    let foundedChatRoom = foundAChatroom(chattersArray, CHATROOMS)
       if (typeof foundedChatRoom == 'undefined'){
         // debugger
         fetch(`http://localhost:3000/api/v1/chatrooms`, {
@@ -138,7 +136,7 @@ function onUserClick(e, signedUSer) {
           messagesContainer.dataset.chatr = res.id
         })
       }else{
-        console.log("beforeBed", foundedChatRoom);
+        // console.log("beforeBed", foundedChatRoom);
         messagesContainer.dataset.chatr = foundedChatRoom.id
         messagesContainer.innerHTML = ""
         foundedChatRoom.messages.forEach(function(message){
@@ -169,7 +167,7 @@ function onUserClick(e, signedUSer) {
 
 
 function postMessageUpdate(messages, userID, roomID) {
-  console.log("message", messages, userID, roomID.dataset.chatr );
+  // console.log("message", messages, userID, roomID.dataset.chatr );
   return fetch('http://localhost:3000/api/v1/messages', {
     method: 'POST',
     headers: {
@@ -199,7 +197,7 @@ function onSubmitMessage(e) {
   e.preventDefault()
   const messageValue = submitMessageForm.querySelector('#message').value
   const userID = e.target.dataset.senderId
-  console.log(userID);
+  // console.log(userID);
   postMessageUpdate(messageValue, userID, messagesContainer)
   .then( res => res.json())
   .then( message => {
