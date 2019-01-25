@@ -9,28 +9,28 @@
   <body>
     <!-- <div id="create-chatroom"></div> -->
     <div class="users">
-      <h1>Matt</h1>
+      <h2 id="currName">Matt</h2>
       <ul id="user-container">
 
       </ul>
 
     </div>
-    <div class="main" id="message-container">
+    <div class="main" id="message-container" data-chatr="">
       <!-- <h1>Current Chat</h1> -->
       <!-- Place chat bubbels here-->
       <div class="chatwith">
-        <h1>Name of Person you are chating with</h1>
+        <h1>Please click on a name to start chating</h1>
       </div>
       <hr>
 
       <div>
         <div>
-            <ul class="messages">
+            <ul class="messages" data-chatr="">
 
             </ul>
           </div>
       </div>
-      <hr>
+
       <div class="send-message">
         <form data-sender-id="13" id="submit-form">
           <input id="message" type="text" name="message" placeholder="Send a Message">

@@ -10,6 +10,9 @@
   padding-top: 20px;
 }
 
+h2 {
+  margin-left: 4px;
+}
 /* The navigation menu links */
 .users p {
   padding: 6px 8px 6px 16px;
