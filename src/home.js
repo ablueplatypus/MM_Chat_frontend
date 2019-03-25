@@ -50,7 +50,7 @@ console.log(formInput);
         let userID = user.id
         console.log(userID);
         localStorage.setItem('theID', `${userID}`);
-        window.location.href = 'file:///Users/agamy/Development/mod3-project/Mod_3_project_frontend/index.html';
+        window.location.href = 'file:///Users/flatironschool/Development/code/Mod_3/project_mod3/mmchat_frontend/index.html';
       })
 
       /****** END CREATING NEW CUSTOMER ***********/
@@ -58,7 +58,7 @@ console.log(formInput);
     }else{
       let userID = foundUser.id
       localStorage.setItem('theID', `${foundUser.id}`);
-      window.location.href = 'file:///Users/agamy/Development/mod3-project/Mod_3_project_frontend/index.html';
+      window.location.href = 'file:///Users/flatironschool/Development/code/Mod_3/project_mod3/mmchat_frontend/index.html';
 
     }
     form.reset();
